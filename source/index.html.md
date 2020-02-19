@@ -1,98 +1,178 @@
 ---
 title: API Reference
 
-language_tabs: # must be one of https://git.io/vQNgJ
-  - shell
-  - ruby
-  - python
-  - javascript
-
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/slatedocs/slate'>Documentation Powered by Slate</a>
+
+language_tabs:
 
 includes:
-  - errors
 
 search: true
 ---
 
-# Introduction
+# GET STARTED
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+## Introduction
 
-We have language bindings in Shell, Ruby, Python, and JavaScript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+The Olive API is organized around [REST](http://en.wikipedia.org/wiki/Representational_State_Transfer). Our API has predictable resource-oriented URLs, accepts [form-encoded](https://en.wikipedia.org/wiki/POST_(HTTP)#Use_for_submitting_web_forms) request bodies, returns [JSON-encoded](http://www.json.org/) responses, and uses standard HTTP response codes, authentication, and verbs.
 
-This example API documentation page was created with [Slate](https://github.com/slatedocs/slate). Feel free to edit it and use it as a base for your own API's documentation.
+The Olive API allows to create card-linked loyalty and asset building programs.
 
-# Authentication
+## Base URL
 
-> To authorize, use this code:
+All API URLs referenced in this documentation start with the following base URL:
 
-```ruby
-require 'kittn'
+`https://api.oliveltd.com/v1`
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
+## Authentication
 
-```python
-import kittn
+The Olive API uses API keys to authenticate requests.
 
-api = kittn.authorize('meowmeowmeow')
-```
+Authenticate your API requests by including your test or live secret API key in the request header. Create an HTTP header named `olive-key` and set your secret key as the value.
+
+<aside class="warning">
+Do not share or include your secret API keys on client side code.
+</aside>
+
+> Example Request
 
 ```shell
 # With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
+curl GET \
+  https://api.oliveltd.com/v1/cards/6db5a7f8-6738-49f8-80ce-47fce0426bf1 \
+  -H 'content-type: application/json' \
+  -H 'olive-key: b913d3b7903c4d11a8dfc336ec9c5cc9'
 ```
 
-```javascript
-const kittn = require('kittn');
+## Errors
 
-let api = kittn.authorize('meowmeowmeow');
+Olive uses conventional HTTP response codes to indicate the success or failure of an API request. In general:
+
+- Codes in the `2xx` range indicate success
+- Codes in the `4xx` range indicate an error that failed given the information provided (e.g., a required parameter was omitted, a charge failed, etc.)
+- Codes in the `5xx` range indicate an error with Olive's servers
+
+
+Error Code | Meaning
+---------- | -------
+400 | Bad Request -- Your request is invalid.
+401 | Unauthorized -- Your API key is wrong.
+403 | Forbidden -- The kitten requested is hidden for administrators only.
+404 | Not Found -- The specified kitten could not be found.
+500 | Internal Server Error -- We had a problem with our server. Try again later.
+503 | Service Unavailable -- We're temporarily offline for maintenance. Please try again later.
+
+# API REFERENCE
+
+## Asset Building Programs
+
+### The asset building program object
+
+Attributes | Type | Description
+--------- | ------- | -----------
+ID | string | Asset building program ID
+Created | datetime | Creation date & time
+Name | string | Asset building program name
+Active | boolean | Whether the asset building program is currently active
+
+### Create asset building program
+
+Creates a new asset building program.
+
+Body arguments | Description
+--------- | ------- | -----------
+Name | <b><sup><font color="red">REQUIRED</font></sup></b> Asset building program name
+Active | Whether the asset building program is currently active. Default value: `false`
+
+```shell
+curl GET \
+  https://api.oliveltd.com/v1/asset_building_programs \
+  -H 'content-type: application/json' \
+  -H 'olive-key: b913d3b7903c4d11a8dfc336ec9c5cc9'
+  -d '{
+    "id": "8b6298a8-70d1-40b2-d331-08d7b3d27117",
+    "created": "2020-02-17T17:54:32.1",
+    "name": "Acme Inc Asset Building Program",
+    "active": true
+  }'
 ```
 
-> Make sure to replace `meowmeowmeow` with your API key.
+### List Asset Building Programs
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+Returns a list of your Asset Building Programs.
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow`
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-
-# Kittens
-
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
+```shell
+curl GET \
+  https://api.oliveltd.com/v1/asset_building_programs \
+  -H 'content-type: application/json' \
+  -H 'olive-key: b913d3b7903c4d11a8dfc336ec9c5cc9'
 ```
 
-```python
-import kittn
+> RESPONSE
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
+```json
+[
+  {
+    "id": "365fabf4-d482-43fd-1b39-08d7ab196872",
+    "name": "Acme Inc Asset Building Program",
+    "created": "2020-02-06T15:29:51.187",
+    "active": true
+  },
+  {
+    "id": "c882d758-5597-4f3d-8987-5f13a00bd2a7",
+    "name": "Umbrella Asset Building Program",
+    "created": "2020-02-06T15:05:06.587",
+    "active": true
+  }
+]
 ```
+
+### Get Asset Building Program
+
+### Edit Asset Building Program
+
+### Delete Asset Building Program
+
+
+## Brands
+
+## Cards
+
+## Destination Accounts
+
+## Locations
+
+## Loyalty Programs
+
+## Members
+
+## Members (Asset Building Programs)
+
+## Members (Loyalty Programs)
+
+## Notification Preference
+
+## Offers
+
+## Redeemed Offers
+
+## Round-Up Rules
+
+## Source Accounts
+
+## Totals
+
+## Transactions
+
+## Webhooks
+
+## Kittens
+
+### Get All Kittens
 
 ```shell
 curl "http://example.com/api/kittens"
   -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
 ```
 
 > The above command returns JSON structured like this:
@@ -118,11 +198,11 @@ let kittens = api.kittens.get();
 
 This endpoint retrieves all kittens.
 
-### HTTP Request
+#### HTTP Request
 
 `GET http://example.com/api/kittens`
 
-### Query Parameters
+#### Query Parameters
 
 Parameter | Default | Description
 --------- | ------- | -----------
@@ -133,32 +213,11 @@ available | true | If set to false, the result will include kittens that have al
 Remember — a happy kitten is an authenticated kitten!
 </aside>
 
-## Get a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
+### Get a Specific Kitten
 
 ```shell
 curl "http://example.com/api/kittens/2"
   -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
 ```
 
 > The above command returns JSON structured like this:
@@ -177,43 +236,22 @@ This endpoint retrieves a specific kitten.
 
 <aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
 
-### HTTP Request
+#### HTTP Request
 
 `GET http://example.com/kittens/<ID>`
 
-### URL Parameters
+#### URL Parameters
 
 Parameter | Description
 --------- | -----------
 ID | The ID of the kitten to retrieve
 
-## Delete a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
-```
+### Delete a Specific Kitten
 
 ```shell
 curl "http://example.com/api/kittens/2"
   -X DELETE
   -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
 ```
 
 > The above command returns JSON structured like this:
@@ -227,13 +265,12 @@ let max = api.kittens.delete(2);
 
 This endpoint deletes a specific kitten.
 
-### HTTP Request
+#### HTTP Request
 
 `DELETE http://example.com/kittens/<ID>`
 
-### URL Parameters
+#### URL Parameters
 
 Parameter | Description
 --------- | -----------
 ID | The ID of the kitten to delete
-
