@@ -1,31 +1,3 @@
----
-title: Olive API Reference
-
-toc_footers:
-
-language_tabs:
-
-includes:
-  - asset_building_programs
-  - brands
-  - cards
-  - destination_accounts
-  - locations
-  - loyalty_programs
-  - members
-  - asset_building_program_members
-  - loyalty_program_members
-  - notification_preferences
-  - offers
-  - redeemed_offers
-  - round_up_rules
-  - source_accounts
-  - totals
-  - transactions
-  - webhooks
-
-search: true
----
 # GET STARTED
 
 ## Introduction
@@ -42,16 +14,6 @@ All API URLs referenced in this documentation start with the following base URL:
 
 ## Authentication
 
-> Example Request
-
-```shell
-# With shell, you can just pass the correct header with each request
-curl -v -X GET \
-  https://api.oliveltd.com/v1/cards/6db5a7f8-6738-49f8-80ce-47fce0426bf1 \
-  -H 'content-type: application/json' \
-  -H 'olive-key: b913d3b7903c4d11a8dfc336ec9c5cc9'
-```
-
 The Olive API uses API keys to authenticate requests.
 
 Authenticate your API requests by including your test or live secret API key in the request header. Create an HTTP header named `olive-key` and set your secret key as the value.
@@ -59,6 +21,16 @@ Authenticate your API requests by including your test or live secret API key in 
 <aside class="warning">
 Do not share or include your secret API keys on client side code.
 </aside>
+
+> Example Request
+
+```shell
+# With shell, you can just pass the correct header with each request
+curl GET \
+  https://api.oliveltd.com/v1/cards/6db5a7f8-6738-49f8-80ce-47fce0426bf1 \
+  -H 'content-type: application/json' \
+  -H 'olive-key: b913d3b7903c4d11a8dfc336ec9c5cc9'
+```
 
 ## Errors
 
@@ -77,5 +49,3 @@ Error Code | Meaning
 404 | Not Found -- The specified kitten could not be found.
 500 | Internal Server Error -- We had a problem with our server. Try again later.
 503 | Service Unavailable -- We're temporarily offline for maintenance. Please try again later.
-
-# API REFERENCE
